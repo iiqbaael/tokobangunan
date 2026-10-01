@@ -1,0 +1,304 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+
+/* Font "Plus Jakarta Sans" diasumsikan sudah di-load via <link> Google
+   Fonts di resources/views/app.blade.php (sesuai PRD §10.3). Kalau belum,
+   tambahkan di <head>:
+   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../views";
+@source "./**/*.vue";
+
+/* ------------------------------------------------------------------------ *
+ * Design tokens -- Tema "Sky Blue Tech"
+ * Semua warna di seluruh halaman (layout, dashboard, StatusBadge, kartu,
+ * dsb) HARUS lewat token di sini. Jangan taruh hex/warna Tailwind bawaan
+ * (mis. bg-blue-600) langsung di halaman -- ganti nilai di sini kalau mau
+ * ganti tema, bukan cari-ganti di tiap file .vue.
+ * ------------------------------------------------------------------------ */
+@theme {
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+    /* Latar & permukaan */
+    --color-page: #F2F7FB;
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #EAF2F8;
+    --color-sidebar: #E0EAF2;
+
+    /* Border */
+    --color-border: #DCE6EF;
+
+    /* Teks */
+    --color-text-primary: #0F2A43;
+    --color-text-secondary: #5B7288;
+    --color-text-disabled: #9AACBC;
+
+    /* Brand -- sky blue tech */
+    --color-brand-primary: #0284C7;
+    --color-brand-primary-soft: #E3F3FB;
+    --color-brand-secondary: #155E75;
+    --color-brand-secondary-soft: #DDF0F2;
+    --color-brand-dark: #102A43;
+
+    /* Status (dipakai StatusBadge & badge lain -- JANGAN definisikan ulang di halaman) */
+    --color-status-success: #16A34A;
+    --color-status-success-soft: #DCFCE7;
+    --color-status-warning: #D97706;
+    --color-status-warning-soft: #FEF3C7;
+    --color-status-danger: #DC2626;
+    --color-status-danger-soft: #FEE2E2;
+    --color-status-neutral: #64748B;
+    --color-status-neutral-soft: #F1F5F9;
+    --color-status-info: #2563EB;
+    --color-status-info-soft: #DBEAFE;
+
+    /* Aksen kartu statistik dashboard -- lingkaran ikon warna-warni ala
+       screenshot referensi. Boleh dipakai bergantian per kartu. */
+    --color-accent-sky: #0284C7;
+    --color-accent-sky-soft: #E3F3FB;
+    --color-accent-indigo: #6366F1;
+    --color-accent-indigo-soft: #E9E8FD;
+    --color-accent-amber: #F59E0B;
+    --color-accent-amber-soft: #FEF3C7;
+    --color-accent-emerald: #10B981;
+    --color-accent-emerald-soft: #D1FAE5;
+    --color-accent-pink: #EC4899;
+    --color-accent-pink-soft: #FCE7F3;
+}
+
+html {
+    color-scheme: light;
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --color-page: #101923;
+    --color-surface: #172430;
+    --color-surface-muted: #202F3C;
+    --color-sidebar: #172430;
+    --color-border: #30414F;
+    --color-text-primary: #E6EDF3;
+    --color-text-secondary: #B2C0CC;
+    --color-text-disabled: #81919F;
+    --color-brand-primary: #38BDF8;
+    --color-brand-primary-soft: #12384B;
+    --color-brand-secondary: #67C8C7;
+    --color-brand-secondary-soft: #153D42;
+    --color-brand-dark: #09131D;
+    --color-status-success: #4ADE80;
+    --color-status-success-soft: #153B2D;
+    --color-status-warning: #FBBF24;
+    --color-status-warning-soft: #443718;
+    --color-status-danger: #F87171;
+    --color-status-danger-soft: #44262B;
+    --color-status-neutral: #CBD5E1;
+    --color-status-neutral-soft: #2A3541;
+    --color-status-info: #60A5FA;
+    --color-status-info-soft: #1D3550;
+    --color-accent-sky: #7DD3FC;
+    --color-accent-sky-soft: #12384B;
+    --color-accent-indigo: #A5B4FC;
+    --color-accent-indigo-soft: #292F50;
+    --color-accent-amber: #FCD34D;
+    --color-accent-amber-soft: #443718;
+    --color-accent-emerald: #6EE7B7;
+    --color-accent-emerald-soft: #153B35;
+    --color-accent-pink: #F9A8D4;
+    --color-accent-pink-soft: #442A3C;
+}
+
+html[data-theme="dark"] .bg-white {
+    background-color: var(--color-surface);
+}
+
+html[data-theme="dark"] .bg-gray-50,
+html[data-theme="dark"] .bg-gray-100 {
+    background-color: var(--color-surface-muted);
+}
+
+html[data-theme="dark"] .border-gray-100,
+html[data-theme="dark"] .border-gray-200,
+html[data-theme="dark"] .border-gray-300 {
+    border-color: var(--color-border);
+}
+
+html[data-theme="dark"] .text-gray-900,
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .text-gray-700 {
+    color: var(--color-text-primary);
+}
+
+html[data-theme="dark"] .text-gray-600,
+html[data-theme="dark"] .text-gray-500,
+html[data-theme="dark"] .text-gray-400 {
+    color: var(--color-text-secondary);
+}
+
+html[data-theme="dark"] .bg-green-50,
+html[data-theme="dark"] .bg-green-100 {
+    background-color: var(--color-status-success-soft);
+}
+
+html[data-theme="dark"] .bg-red-50,
+html[data-theme="dark"] .bg-red-100 {
+    background-color: var(--color-status-danger-soft);
+}
+
+html[data-theme="dark"] .bg-yellow-100,
+html[data-theme="dark"] .bg-amber-50 {
+    background-color: var(--color-status-warning-soft);
+}
+
+html[data-theme="dark"] .bg-indigo-600,
+html[data-theme="dark"] .bg-blue-600 {
+    background-color: var(--color-brand-primary);
+}
+
+html[data-theme="dark"] .text-indigo-600,
+html[data-theme="dark"] .text-indigo-700,
+html[data-theme="dark"] .text-blue-600 {
+    color: var(--color-brand-primary);
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    color-scheme: dark;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 12% 8%, rgb(2 132 199 / 7%), transparent 36%),
+        radial-gradient(ellipse at 88% 78%, rgb(16 185 129 / 6%), transparent 34%),
+        var(--color-page);
+    background-attachment: fixed;
+}
+
+html[data-theme="dark"] body {
+    background:
+        radial-gradient(ellipse at 12% 8%, rgb(56 189 248 / 10%), transparent 36%),
+        radial-gradient(ellipse at 88% 78%, rgb(103 200 199 / 7%), transparent 34%),
+        var(--color-page);
+    background-attachment: fixed;
+}
+
+:where([class~="bg-page"]) {
+    background-color: transparent;
+}
+
+html [class~="bg-surface"],
+html [class~="bg-surface/95"],
+html [class~="bg-surface/75"],
+html [class~="bg-white"] {
+    background-color: color-mix(in srgb, var(--color-surface) 78%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    backdrop-filter: blur(18px) saturate(135%);
+}
+
+@layer base {
+    a[href],
+    button {
+        transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+        transition-duration: 160ms;
+        transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    button:not(:disabled):hover {
+        transform: translateY(-1px);
+    }
+
+    button:not(:disabled):active {
+        transform: translateY(0);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-brand-primary);
+        outline-offset: 2px;
+    }
+
+    tbody tr {
+        transition: background-color 140ms ease-out;
+    }
+
+    tbody tr:hover {
+        background-color: var(--color-surface-muted);
+    }
+}
+
+@keyframes dashboard-rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dashboard-bar-rise {
+    from {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+
+    to {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+}
+
+.dashboard-rise-in {
+    animation: dashboard-rise-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--stagger-order, 0) * 55ms);
+}
+
+.dashboard-stat-card {
+    transition:
+        transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-color 180ms ease-out,
+        box-shadow 180ms ease-out;
+}
+
+.dashboard-stat-card--hoverable:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 16px 28px -18px rgb(14 165 233 / 55%), 0 8px 18px -16px rgb(15 42 67 / 35%);
+}
+
+.dashboard-stat-card--interactive:focus-visible {
+    transform: translateY(-2px);
+}
+
+.dashboard-chart-panel {
+    animation: dashboard-rise-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.sales-chart-bar {
+    animation: dashboard-bar-rise 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--bar-order, 0) * 55ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Scrollbar tipis buat sidebar/list panjang -- kosmetik, aman dihapus */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 9999px;
+}
