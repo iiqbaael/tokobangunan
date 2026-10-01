@@ -1,61 +1,96 @@
-# tokobangunan
+# TB Sumber Baru
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Aplikasi web untuk membantu operasional toko bangunan dengan pengelolaan penjualan, persediaan, kasir, dan laporan. Aplikasi dibuat menggunakan Laravel 12, Inertia.js, Vue 3, dan Tailwind CSS.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Fitur
 
-## About Laravel
+- Login dengan peran Owner, Admin, dan Kasir.
+- Pengelolaan barang, kategori, pelanggan, serta satuan alternatif.
+- POS penjualan, pembayaran, dan pembatalan (void) transaksi.
+- Stok per cabang, penyesuaian stok dengan persetujuan, dan transfer antar cabang.
+- Shift kasir dan pencatatan kas masuk/keluar.
+- Pengelolaan piutang dan catatan tindak lanjut pelanggan.
+- Dashboard dan laporan stok, kartu stok, kas shift, penjualan kredit, laba kotor, barang terhapus, serta konsolidasi cabang.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Kebutuhan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.2 atau lebih baru beserta ekstensi yang dibutuhkan Laravel.
+- Composer.
+- Node.js dan npm.
+- SQLite untuk konfigurasi lokal bawaan, atau MySQL/MariaDB bila disiapkan sendiri.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Menjalankan secara lokal
 
-## Learning Laravel
+Jalankan perintah berikut dari folder proyek:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+composer install
+npm install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Salin `.env.example` menjadi `.env`, lalu buat application key:
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Di Windows PowerShell, gunakan `Copy-Item .env.example .env` sebagai pengganti `cp`.
 
-### Premium Partners
+Konfigurasi `.env.example` menggunakan SQLite. Pastikan file `database/database.sqlite` tersedia, kemudian jalankan migrasi dan data demo:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan migrate --seed
+```
 
-## Contributing
+Build aset frontend dan jalankan server lokal:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+npm run build
+php artisan serve
+```
 
-## Code of Conduct
+Buka alamat yang ditampilkan oleh `php artisan serve`, biasanya `http://127.0.0.1:8000`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Untuk pengembangan frontend dengan hot reload, jalankan `npm run dev` di terminal lain sebagai pengganti build produksi.
 
-## Security Vulnerabilities
+> **Perhatian:** `php artisan migrate:fresh --seed` menghapus semua tabel dan data pada database yang sedang dikonfigurasi sebelum membuat ulang database demo. Gunakan hanya pada database lokal yang datanya boleh dihapus.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Akun demo
 
-## License
+Seeder demo membuat dua cabang, data barang, stok, transaksi, shift, dan data contoh lainnya. Akun berikut menggunakan password awal `password` pada database demo baru:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Peran | Email | Cabang |
+|---|---|---|
+| Owner | `demo.owner@tbsumberbaru.test` | Semua cabang |
+| Admin | `admin@toko.test` | Cabang Utama |
+| Admin | `admin.cb2@tbsumberbaru.test` | Cabang Cibubur |
+| Kasir | `kasir@toko.test` | Cabang Utama |
+| Kasir | `kasir.cb2@tbsumberbaru.test` | Cabang Cibubur |
+
+Seeder dasar juga menyiapkan `owner@toko.test` sebagai Owner. Pada database baru, password awalnya juga `password`.
+
+**Akun dan data di atas hanya untuk demo lokal.** Ganti password dan kredensial sebelum aplikasi digunakan dengan data atau pengguna sungguhan. Seeder memakai `firstOrCreate`, jadi menjalankan seeder kembali tidak mereset password akun yang sudah ada.
+
+## Pengujian
+
+Jalankan seluruh test dengan:
+
+```bash
+php artisan test
+```
+
+Konfigurasi test pada `phpunit.xml` menggunakan MySQL dan database `db_sumberbaru_test`, bukan SQLite lokal bawaan. Buat database test khusus sebelum menjalankan test dan pastikan konfigurasi koneksi MySQL pada `.env` dapat digunakan. Jangan arahkan test ke database produksi atau database yang berisi data penting.
+
+Sebagian test autentikasi dan fitur menggunakan factory untuk menyiapkan data. Test yang terkait verifikasi email dapat gagal karena fitur/rute verifikasi email belum diaktifkan pada aplikasi.
+
+## Struktur aplikasi
+
+- `app/Http/Controllers` — controller dan endpoint aplikasi.
+- `app/Models` — model dan relasi database.
+- `app/Services` — aturan bisnis penjualan, stok, transfer, shift, dan piutang.
+- `database/migrations` — skema database.
+- `database/seeders` — cabang, akun, dan dataset demo.
+- `resources/js/Pages` — halaman Vue/Inertia.
+- `routes/web.php` dan `routes/auth.php` — rute aplikasi.
+- `tests` — test unit dan feature.
